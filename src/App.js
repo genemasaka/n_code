@@ -24,23 +24,27 @@ function App() {
   }
   function Login() {
     const [password, setPassowrd] = useState('')
+    const [EncodeContract, setEncodeContract] = useState(null)
     const provider = new ethers.providers.Web3Provider(window.ethereum, "goerli")
     const contractAdd = '0xe5e1c3Bd8eF8e85652178537Ee6165F149881601'
     let signer;
-    let EncodeContract;
+    
     provider.send("eth_requestAccounts", []).then(() => {
       provider.listAccounts().then((accounts) => {
         signer = provider.getSigner(accounts[0]);
-        EncodeContract = new ethers.Contract(contractAdd, abi, signer)
+        console.log(signer)
+        let Contract = new ethers.Contract(contractAdd, abi, signer)
+        
       }).catch(error => {
         console.log(error)
       })
     })
+    console.log(EncodeContract)
     const handleSubmit = (e) => {
       e.preventDefault()
-      console.log(password)
+      return(password)
     }
-    async function encode(password) {
+    async function n_code() {
       const encodePromise = EncodeContract.encode(password)
       const encoded = await encodePromise
       console.log(encoded)
@@ -60,7 +64,7 @@ function App() {
               <input type="password" value={password} onChange={(e) => {
                 setPassowrd(e.target.value)
               }}class="input" id="password" />
-              <button type="submit" onClick={encode} class="btn btn-dark">Encode</button>
+              <button type="submit" onClick={n_code()} class="btn btn-dark">Encode</button>
               </form>
             </div>
           </div>
