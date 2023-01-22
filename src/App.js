@@ -1,8 +1,11 @@
-import {useContext, useState, useEffect} from 'react'
+import {React ,useContext, useState, useEffect} from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css'
 import { ethers } from 'ethers'
 import abi from './contract/Encoder.json'
+
+
+
 function App() {
   function Home() {
     return (
@@ -24,7 +27,7 @@ function App() {
   }
   function Login() {
     const [password, setPassowrd] = useState('')
-    const [EncodeContract, setEncodeContract] = useState(null)
+    let EncodeContract;
     const provider = new ethers.providers.Web3Provider(window.ethereum, "goerli")
     const contractAdd = '0xe5e1c3Bd8eF8e85652178537Ee6165F149881601'
     let signer;
@@ -33,13 +36,14 @@ function App() {
       provider.listAccounts().then((accounts) => {
         signer = provider.getSigner(accounts[0]);
         console.log(signer)
-        let Contract = new ethers.Contract(contractAdd, abi, signer)
-        
+        EncodeContract = new ethers.Contract(contractAdd, abi, signer)
       }).catch(error => {
         console.log(error)
       })
     })
     console.log(EncodeContract)
+
+    
     const handleSubmit = (e) => {
       e.preventDefault()
       return(password)
