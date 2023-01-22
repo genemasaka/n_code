@@ -1,0 +1,30 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+
+.card {
+  margin-top: 25px;
+  text-align: center;
+  width: 300px;
+  height: 300px;
+  flex-wrap: wrap;
+}
+
+.card-header {
+  background-color: black;
+  color: whitesmoke;
+
+}
+.card-body {
+  padding: 0;
+  
+}
+
+
+.btn {
+  width: 150px;
+  margin-top: 15px;
+}
