@@ -74,8 +74,10 @@ function App() {
   }
   return (
     <> 
+    <div class="body">
     <Login />
     <Home />
+    </div>
     </>
 
   );
