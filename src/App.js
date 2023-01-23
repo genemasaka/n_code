@@ -1,4 +1,4 @@
-import {React ,useContext, useState, useEffect} from 'react'
+import { React, useContext, useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css'
 import { ethers } from 'ethers'
@@ -29,32 +29,37 @@ function App() {
     const [password, setPassowrd] = useState('')
     let EncodeContract;
     const provider = new ethers.providers.Web3Provider(window.ethereum, "goerli")
-    const contractAdd = '0xe5e1c3Bd8eF8e85652178537Ee6165F149881601'
-    let signer;
-    
-    provider.send("eth_requestAccounts", []).then(() => {
-      provider.listAccounts().then((accounts) => {
-        signer = provider.getSigner(accounts[0]);
-        console.log(signer)
-        EncodeContract = new ethers.Contract(contractAdd, abi, signer)
-      }).catch(error => {
-        console.log(error)
-      })
-    })
-    console.log(EncodeContract)
 
-    
+    async function handleEncode() {
+      const contractAdd = '0xe5e1c3Bd8eF8e85652178537Ee6165F149881601'
+      try {
+        await provider.send("eth_requestAccounts", []);
+        const accounts = await provider.listAccounts()
+        let signer = provider.getSigner(accounts[0])
+        EncodeContract = new ethers.Contract(contractAdd, abi, signer)
+
+        async function n_code(EncodeContract) {
+          const encodePromise = EncodeContract.encode(password)
+          const encoded = await encodePromise
+          console.log(encoded)
+        }
+        await n_code(EncodeContract)
+      }
+      catch (error) {
+                console.log(error)
+
+      }
+      }
+    }
+
+
     const handleSubmit = (e) => {
       e.preventDefault()
-      return(password)
+      return (password)
     }
-    async function n_code() {
-      const encodePromise = EncodeContract.encode(password)
-      const encoded = await encodePromise
-      console.log(encoded)
-    }
-   
-    
+
+
+
     return (
       <>
         <div class="main">
@@ -64,11 +69,11 @@ function App() {
             </div>
             <div class="card-body">
               <form onSubmit={handleSubmit}>
-              <p>Enter your password</p>
-              <input type="password" value={password} onChange={(e) => {
-                setPassowrd(e.target.value)
-              }}class="input" id="password" />
-              <button type="submit" onClick={n_code()} class="btn btn-dark">Encode</button>
+                <p>Enter your password</p>
+                <input type="password" value={password} onChange={(e) => {
+                  setPassowrd(e.target.value)
+                }} class="input" id="password" />
+                <button type="submit" onClick={handleEncode} class="btn btn-dark">Encode</button>
               </form>
             </div>
           </div>
@@ -77,14 +82,15 @@ function App() {
     )
   }
   return (
-    <> 
-    <div class="body">
-    <Login />
-    <Home />
-    </div>
+    <>
+      <div class="body">
+        <Login />
+        <Home />
+      </div>
     </>
 
   );
+
 }
 
 export default App;
